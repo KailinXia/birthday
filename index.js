@@ -49,7 +49,7 @@ $(function() {
             $('.container')
                 .animate({ opacity: 0 }, 800)
                 .slideUp(500, () => {
-                    showBirthdayAnimation();
+                    showBirthdayAnimation1();
                     startHeartbeatEffect();
                 });
         }
@@ -73,10 +73,10 @@ $(function() {
     // 生日动画效果
     function showBirthdayAnimation() {
         const messages = [
-            "亲爱的{name}：",
-            "在这个特别的日子里",
-            "愿所有美好如期而至",
-            "生日快乐！❤️"
+                "亲爱的{name}：",
+                "在这个特别的日子里",
+                "愿所有美好如期而至",
+                "生日快乐！❤️"
         ];
         
         const $container = $('<div class="birthday-content">')
@@ -108,7 +108,66 @@ $(function() {
             window.location.href = 'index1.html';
         });
     }
-
+    function showBirthdayAnimation1() {
+        const messages = [
+            "亲爱的{name}：",
+            "在这个特别的日子里",
+            "愿所有美好如期而至",
+            "生日快乐！❤️"
+        ];
+        
+        const $container = $('<div class="birthday-content">')
+            .css({
+                opacity: 0,
+                transform: 'translateY(50px)',
+                display: 'flex',          // 新增flex布局
+                flexDirection: 'column',  // 垂直排列
+                alignItems: 'center'     // 水平居中
+            })
+            .appendTo('body');
+        
+        // 添加消息
+        messages.forEach((text, i) => {
+            $('<div>')
+                .text(text.replace('{name}', $('#userName').val()))
+                .css({
+                    fontSize: `${24 + i*4}px`,
+                    animation: `float ${3 + i*0.5}s ease-in-out infinite alternate`
+                })
+                .appendTo($container)
+                .delay(i*800).fadeIn(600);
+        });
+    
+        // 添加圆形头像
+        $('<div>')
+            .css({
+                width: '120px',
+                height: '120px',
+                borderRadius: '50%',
+                background: `url("avrtar.jpg") center/cover`,
+                margin: '20px 0',
+                boxShadow: '0 0 15px rgba(255, 182, 193, 0.8)',
+                opacity: 0,  // 初始透明
+                transform: 'scale(0.8)'  // 初始缩放
+            })
+            .appendTo($container)
+            .delay((messages.length)*800) // 在最后一条消息之后
+            .animate({
+                opacity: 1,
+                transform: 'scale(1)'
+            }, 1000);
+    
+        // 容器动画
+        $container.animate({ opacity: 1 }, 5000, () => {
+            setTimeout(() => {
+                $container.fadeOut(5000, () => {
+                    $container.remove();
+                    // 将跳转移到淡出完成后
+                    window.location.href = 'index1.html';
+                });
+            }, 2000);
+        });
+    }
     // 心跳特效
     function startHeartbeatEffect() {
         $('.bg-bubbles li').each(function(i) {
